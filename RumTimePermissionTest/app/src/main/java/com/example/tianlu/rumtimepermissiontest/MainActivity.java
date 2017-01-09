@@ -23,8 +23,7 @@ public class MainActivity extends AppCompatActivity {
         makecall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE))
-                    != PackageManager.PERMISSION_GRANTED) {
+                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(MainActivity.this,new
                         String[]{Manifest.permission.CALL_PHONE},1);
                 }else{
