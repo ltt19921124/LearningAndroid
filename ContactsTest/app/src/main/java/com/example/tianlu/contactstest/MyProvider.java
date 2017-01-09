@@ -37,7 +37,7 @@ public class MyProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
-        switch (uriMatcher.match(uri)){
+        switch (uriMatcher.match(uri)) {
             case TABLE1_DIR:
                 break;
             case TABLE1_ITEM:
@@ -49,6 +49,7 @@ public class MyProvider extends ContentProvider {
             default:
                 break;
         }
+        return null;
     }
 
     @Override
