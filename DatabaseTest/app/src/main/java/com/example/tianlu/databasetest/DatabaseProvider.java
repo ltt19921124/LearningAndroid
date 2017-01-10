@@ -7,7 +7,6 @@ import android.net.Uri;
 
 public class DatabaseProvider extends ContentProvider {
 
-    public
 
 
     @Override
