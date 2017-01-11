@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
+
 public class DatabaseProvider extends ContentProvider {
 
 
