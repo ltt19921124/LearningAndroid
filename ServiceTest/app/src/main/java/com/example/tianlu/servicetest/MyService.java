@@ -1,12 +1,28 @@
 package com.example.tianlu.servicetest;
 
+import android.app.DownloadManager;
 import android.app.Service;
 import android.content.Intent;
 import android.icu.text.LocaleDisplayNames;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
 public class MyService extends Service {
+
+    private DownloadBinder mBinder = new DownloadBinder();
+
+    class DownloadBinder extends Binder {
+        public void startDownload() {
+            Log.d("MyService", "startDownLoad executed");
+        }
+
+        public int getProgress() {
+            Log.d("MyService", "getProgress executed");
+            return 0;
+        }
+    }
+
     public MyService() {
     }
 
