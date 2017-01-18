@@ -8,7 +8,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
 
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLocationClient = new LocationClient(getApplicationContext());
-        mLocationClient.registerLocationListener(new MyLocationClickListener());
+        mLocationClient.registerLocationListener(new MyLocationListener());
         setContentView(R.layout.activity_main);
         positionText = (TextView) findViewById(R.id.position_text_view);
         List<String> permissionlist = new ArrayList<>();
@@ -58,8 +61,40 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode){
             case 1:
                 if (grantResults.length > 0){
-                    for
+                    for(int result : grantResults){
+                        if (result != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(this,"必须同意所有权限才能使用本程序",
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
+                    }
+                    requestLocation();
+                }else{
+                    Toast.makeText(this,"发生未知错误",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+            default:
+        }
+    }
+
+    public class MyLocationListener implements BDLocationListener{
+
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            StringBuilder currentPosition = new StringBuilder();
+            currentPosition.append("纬度:").append(bdLocation.getLatitude()).
+                    append("\n");
+            currentPosition.append("经线:").append(bdLocation.getLongitude()).
+                    append("\n");
+            currentPosition.append("定位方式:");
+            if (bdLocation.getLocType() == BDLocation.TypeGpsLocation) {
+                currentPosition.append("GPS");
+            } else if (bdLocation.getLocType() == BDLocation.TypeCacheLocation) {
+                currentPosition.append("网络:");
             }
+            positionText.setText(currentPosition);
         }
     }
 }
