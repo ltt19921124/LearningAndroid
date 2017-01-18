@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 
 import java.util.ArrayList;
@@ -53,6 +54,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestLocation(){
+        initLocation();
+        mLocationClient.start();
+    }
+
+    private void initLocation(){
+        LocationClientOption option = new LocationClientOption();
+        option.setScanSpan(5000);
+        option.setIsNeedAddress(true);
+        mLocationClient.setLocOption(option);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         mLocationClient.start();
     }
 
@@ -82,16 +97,25 @@ public class MainActivity extends AppCompatActivity {
     public class MyLocationListener implements BDLocationListener{
 
         @Override
-        public void onReceiveLocation(BDLocation bdLocation) {
+        public void onReceiveLocation(BDLocation location) {
             StringBuilder currentPosition = new StringBuilder();
-            currentPosition.append("纬度:").append(bdLocation.getLatitude()).
+            currentPosition.append("纬度:").append(location.getLatitude()).
                     append("\n");
-            currentPosition.append("经线:").append(bdLocation.getLongitude()).
+            currentPosition.append("经线:").append(location.getLongitude()).
+                    append("\n");
+            currentPosition.append("国家:").append(location.getCountry()).
+                    append("\n");
+            currentPosition.append("省:").append(location.getProvince()).
+                    append("\n");
+            currentPosition.append("市:").append(location.getCity()).append("\n");
+            currentPosition.append("区:").append(location.getDistrict()).
+                    append("\n");
+            currentPosition.append("街道:").append(location.getStreet()).
                     append("\n");
             currentPosition.append("定位方式:");
-            if (bdLocation.getLocType() == BDLocation.TypeGpsLocation) {
+            if (location.getLocType() == BDLocation.TypeGpsLocation) {
                 currentPosition.append("GPS");
-            } else if (bdLocation.getLocType() == BDLocation.TypeCacheLocation) {
+            } else if (location.getLocType() == BDLocation.TypeCacheLocation) {
                 currentPosition.append("网络:");
             }
             positionText.setText(currentPosition);
